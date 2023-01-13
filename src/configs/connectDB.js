@@ -1,14 +1,19 @@
-// get the client
-//const mysql = require('mysql2');
-import mysql from "mysql2/promise";
+const { Sequelize } = require("sequelize");
 
-console.log("Creating connection pool....");
-// create the connection to database
-const pool = mysql.createPool({
+// Option 3: Passing parameters separately (other dialects)
+const sequelize = new Sequelize("nln_booking", "root", null, {
   host: "localhost",
-  user: "root",
-  database: "nodejsbasic",
-  //password: "password",
+  dialect: "mysql",
+  logging: false,
 });
 
-export default pool;
+let connectDB = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+};
+
+module.exports = connectDB;

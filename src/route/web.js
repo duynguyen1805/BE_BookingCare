@@ -36,17 +36,6 @@ const initWebRoute = (app) => {
   //method: post, get, put, delete
   //method get => client lay thong tin tu servers tra ve.
   router.get("/", homeController.getHomepage);
-  router.get("/detail/user/:userId", homeController.getDetailPage);
-  router.post("/create-new-user", homeController.createNewUser);
-  router.post("/delete-user", homeController.deleteUser);
-  router.get("/edit-user/:userId", homeController.getEditPage);
-  router.post("/update-user", homeController.postUpdateUser);
-  router.get("/upload", homeController.getUploadFilePage);
-  router.post(
-    "/upload-file-pic",
-    upload.single("fileupload_pic"), //this is used middelware
-    homeController.handleUploadFile
-  );
 
   return app.use("/", router);
 };

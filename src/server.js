@@ -2,8 +2,7 @@
 import express from "express";
 import configViewEngine from "./configs/viewEngine";
 import initWebRoute from "./route/web";
-import initAPIRoute from "./route/api";
-// import connection from "./configs/connectDB";
+import connectDB from "./configs/connectDB";
 
 require("dotenv").config();
 
@@ -14,14 +13,16 @@ const port = process.env.PORT || 3000; //backup, .port or 3000
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+
 //setup viewEngine
 configViewEngine(app);
 //init web route (dieu huong website)
 initWebRoute(app);
-
-//inti api
-initAPIRoute(app);
+//connectDatabase
+connectDB();
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Backend Nodejs running on port ${port}`);
 });
