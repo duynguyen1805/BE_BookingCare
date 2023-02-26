@@ -1,0 +1,5 @@
+creatModel -> [migrations] -> database
+>>> npm sequelize-cli db:migrate
+
+up data (seeder) -> database
+>>> npx sequelize-cli db:seed:all

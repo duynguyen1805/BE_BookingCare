@@ -10,9 +10,9 @@ const sequelize = new Sequelize("nln_booking", "root", null, {
 let connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Connection has been established successfully.");
+    console.log("Kết nối thành công.");
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Không thể kết nối đến database:", error);
   }
 };
 
