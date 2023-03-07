@@ -1,13 +1,21 @@
 //const express = require("express");
 import express from "express";
 import configViewEngine from "./configs/viewEngine";
-import initWebRoute from "./routes/web";
+import initWebRoutes from "./routes/web";
 import connectDB from "./configs/connectDB";
+import cors from "cors";
+
 
 require("dotenv").config();
+const corsConfig = {
+  credentials: true,
+  origin: true,
+}
 
 const app = express();
-const port = process.env.PORT || 3000; //backup, .port or 3000
+app.use(cors(corsConfig));
+
+const port = process.env.PORT || 8080; //backup, .port or 3000
 
 //cauhinh cho phep gui data tu client len phia server; body-parser da tich hop trong express
 app.use(express.urlencoded({ extended: true }));
@@ -19,7 +27,7 @@ app.use(express.json());
 //setup viewEngine
 configViewEngine(app);
 //init web route (dieu huong website)
-initWebRoute(app);
+initWebRoutes(app);
 //connectDatabase
 connectDB();
 
