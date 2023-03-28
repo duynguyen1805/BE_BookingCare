@@ -56,6 +56,15 @@ const initWebRoutes = (app) => {
   //homepage
   router.get("/api/top-doctor-homepage", doctorController.getTopDoctor);
 
+  router.get("/api/get-all-doctors", doctorController.getAllDoctors);
+  router.post("/api/save-infor-doctors", doctorController.postInforDoctors);
+  router.get("/api/get-detail-doctor-by-id",doctorController.getDetailDoctorById);
+
+  router.post("/api/bulk-create-schedule", doctorController.bulkCreateSchedule)
+
+  router.get("/api/get-schedule-doctor-by-date",doctorController.getScheduleByDate);
+  router.get("/api/get-more-infor-doctor-by-id",doctorController.getMoreInforDoctorById);
+
 
   return app.use("/", router);
 };
