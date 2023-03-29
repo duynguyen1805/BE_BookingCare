@@ -2,6 +2,7 @@ import express from "express";
 import homeController from "../controller/homeController";
 import userController from "../controller/userController";
 import doctorController from "../controller/doctorController";
+import specialtyController from "../controller/specialtyController";
 import multer from "multer";
 import path from "path";
 
@@ -64,7 +65,10 @@ const initWebRoutes = (app) => {
 
   router.get("/api/get-schedule-doctor-by-date",doctorController.getScheduleByDate);
   router.get("/api/get-more-infor-doctor-by-id",doctorController.getMoreInforDoctorById);
+  
 
+  router.post("/api/create-new-specialty", specialtyController.createSpecialty);
+  router.get("/api/get-all-specialty", specialtyController.getAllSpecialty);
 
   return app.use("/", router);
 };
