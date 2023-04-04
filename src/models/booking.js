@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // định danh các mối quan hệ
+      Booking.belongsTo(models.User, {
+        foreignKey: "patientId",
+        targetKey: "id",
+        as: "patientData",
+      });
     }
   }
   Booking.init(
@@ -16,8 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       statusId: DataTypes.STRING, //key table allcode
       doctorId: DataTypes.INTEGER,
       patientId: DataTypes.INTEGER,
-      date: DataTypes.DATE, //date -> timestamp
+      date: DataTypes.STRING, //date -> timestamp
       timeType: DataTypes.STRING,
+      token: DataTypes.STRING,
     },
     {
       sequelize,

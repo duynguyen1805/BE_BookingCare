@@ -3,6 +3,7 @@ import homeController from "../controller/homeController";
 import userController from "../controller/userController";
 import doctorController from "../controller/doctorController";
 import specialtyController from "../controller/specialtyController";
+import patientController from "../controller/patientController";
 import multer from "multer";
 import path from "path";
 
@@ -44,7 +45,6 @@ const initWebRoutes = (app) => {
   router.post("/put-crud", homeController.putCRUD);
   router.get("/delete-crud", homeController.deleteCRUD);
 
-
   //restAPI
   router.post("/api/login", userController.handleLogin);
   router.get("/api/get-all-users", userController.handleGetAllUsers);
@@ -59,16 +59,46 @@ const initWebRoutes = (app) => {
 
   router.get("/api/get-all-doctors", doctorController.getAllDoctors);
   router.post("/api/save-infor-doctors", doctorController.postInforDoctors);
-  router.get("/api/get-detail-doctor-by-id",doctorController.getDetailDoctorById);
+  router.get(
+    "/api/get-detail-doctor-by-id",
+    doctorController.getDetailDoctorById
+  );
 
-  router.post("/api/bulk-create-schedule", doctorController.bulkCreateSchedule)
+  router.post("/api/bulk-create-schedule", doctorController.bulkCreateSchedule);
 
-  router.get("/api/get-schedule-doctor-by-date",doctorController.getScheduleByDate);
-  router.get("/api/get-more-infor-doctor-by-id",doctorController.getMoreInforDoctorById);
-  
+  router.get(
+    "/api/get-list-patient-for-doctor",
+    doctorController.getListPatientForDoctor
+  );
+
+  router.get(
+    "/api/get-schedule-doctor-by-date",
+    doctorController.getScheduleByDate
+  );
+  router.get(
+    "/api/get-more-infor-doctor-by-id",
+    doctorController.getMoreInforDoctorById
+  );
+  router.get(
+    "/api/get-profile-doctor-by-id",
+    doctorController.getProfileDoctorById
+  );
 
   router.post("/api/create-new-specialty", specialtyController.createSpecialty);
   router.get("/api/get-all-specialty", specialtyController.getAllSpecialty);
+  router.get(
+    "/api/get-detail-specialty-by-id",
+    specialtyController.getDetailSpecialtyById
+  );
+
+  router.post(
+    "/api/patient-book-appointment",
+    patientController.postBookAppointment
+  );
+  router.post(
+    "/api/verify-book-appointment",
+    patientController.postVerifyBookAppointment
+  );
 
   return app.use("/", router);
 };
