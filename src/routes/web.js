@@ -100,6 +100,8 @@ const initWebRoutes = (app) => {
     patientController.postVerifyBookAppointment
   );
 
+  router.post("/api/confirm-arrived", doctorController.confirmArrived);
+
   return app.use("/", router);
 };
 

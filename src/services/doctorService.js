@@ -1,6 +1,7 @@
 import db from "../models/index";
 require("dotenv").config();
 import _ from "lodash";
+import emailService from "../services/emailService";
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 
@@ -464,7 +465,7 @@ let getListPatientForDoctor = (doctorId, date) => {
           errMessage: "Missing required parameter",
         });
       } else {
-        let data = await db.Booking.findAll({
+        let dataSchedule = await db.Booking.findAll({
           where: {
             statusId: "S2",
             doctorId: doctorId,
@@ -506,6 +507,45 @@ let getListPatientForDoctor = (doctorId, date) => {
   });
 };
 
+let confirmArrived = (data) => {
+  return new Promise(async (resolve, reject) => {
+    if (
+      !data.email ||
+      !data.doctorId ||
+      !data.patientId ||
+      !data.timeType ||
+      !data.imgBase64
+    ) {
+      resolve({
+        errCode: 1,
+        errMessage: "Missing required parameters",
+      });
+    } else {
+      let appointment = await db.Booking.findOne({
+        where: {
+          doctorId: data.doctorId,
+          patientId: data.patientId,
+          timeType: data.timeType,
+          statusId: "S2",
+        },
+        raw: false,
+      });
+
+      if (appointment) {
+        appointment.statusId = "S3";
+        await appointment.save();
+      }
+
+      await emailService.sentAttachment(data);
+
+      resolve({
+        errCode: 0,
+        errMessage: "Ok",
+      });
+    }
+  });
+};
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
@@ -516,4 +556,5 @@ module.exports = {
   getMoreInforDoctorById: getMoreInforDoctorById,
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
+  confirmArrived: confirmArrived,
 };
