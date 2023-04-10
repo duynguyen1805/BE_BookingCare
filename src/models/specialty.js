@@ -9,12 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // định danh các mối quan hệ
+      Specialty.hasMany(models.Doctor_Infor, {
+        foreignKey: "specialtyId",
+        as: "specialtyData",
+      });
     }
   }
   Specialty.init(
     {
       name: DataTypes.STRING,
-      
+
       image: DataTypes.TEXT,
       descriptionHTML: DataTypes.TEXT,
       descriptionMarkdown: DataTypes.TEXT,

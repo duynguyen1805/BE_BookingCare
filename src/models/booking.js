@@ -29,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       date: DataTypes.STRING, //date -> timestamp
       timeType: DataTypes.STRING,
       token: DataTypes.STRING,
+
+      fullname: DataTypes.STRING,
+      phonenumber: DataTypes.STRING,
+      address: DataTypes.STRING,
+      gender: DataTypes.STRING,
+      reason: DataTypes.STRING,
     },
     {
       sequelize,

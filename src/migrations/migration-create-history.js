@@ -14,8 +14,21 @@ module.exports = {
       doctorId: {
         type: Sequelize.INTEGER,
       },
-      description: {
-        type: Sequelize.TEXT,
+      fullname: {
+        type: Sequelize.STRING,
+      },
+
+      phonenumber: {
+        type: Sequelize.STRING,
+      },
+      address: {
+        type: Sequelize.STRING,
+      },
+      gender: {
+        type: Sequelize.STRING,
+      },
+      reason: {
+        type: Sequelize.STRING,
       },
       files: {
         type: Sequelize.TEXT,

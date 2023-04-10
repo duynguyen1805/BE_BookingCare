@@ -28,6 +28,19 @@ let getAllDoctors = async (req, res) => {
   }
 };
 
+let getAllDoctorsforHomePage = async (req, res) => {
+  try {
+    let doctors = await doctorService.getAllDoctorsforHomePage();
+    return res.status(200).json(doctors);
+  } catch (e) {
+    console.log(e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
+
 let postInforDoctors = async (req, res) => {
   try {
     let response = await doctorService.saveDetailInforDoctor(req.body);
@@ -144,6 +157,38 @@ let confirmArrived = async (req, res) => {
   }
 };
 
+let getAllSchedule = async (req, res) => {
+  let id = req.query.id; //get all or id
+
+  if (!id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "missing require parameters",
+      users: [],
+    });
+  }
+
+  let users = await doctorService.getAllSchedule(id);
+
+  return res.status(200).json({
+    errCode: 0,
+    errMessage: "ok",
+    users,
+  });
+};
+
+let handleDeleteSchedule = async (req, res) => {
+  if (!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      message: "missing require parameter",
+    });
+  }
+  let message = await doctorService.handleDeleteSchedule(req.body.id);
+  console.log(message);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   getTopDoctor: getTopDoctor,
   getAllDoctors: getAllDoctors,
@@ -155,4 +200,7 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   confirmArrived: confirmArrived,
+  getAllSchedule: getAllSchedule,
+  handleDeleteSchedule: handleDeleteSchedule,
+  getAllDoctorsforHomePage: getAllDoctorsforHomePage,
 };

@@ -37,8 +37,8 @@ let postBookAppointment = (data) => {
             email: data.email,
             roleId: "R3",
             gender: data.selectedGender,
-            address: data.address,
-            firstName: data.fullname,
+            // address: data.address,
+            // firstName: data.fullname,
           },
         });
 
@@ -54,6 +54,11 @@ let postBookAppointment = (data) => {
               date: data.date,
               timeType: data.timeType,
               token: token,
+              fullname: data.fullname,
+              phonenumber: data.phonenumber,
+              address: data.address,
+              gender: data.selectedGender,
+              reason: data.reason,
             });
           } else {
             await db.Booking.create({
@@ -63,6 +68,11 @@ let postBookAppointment = (data) => {
               date: data.date,
               timeType: data.timeType,
               token: token,
+              fullname: data.fullname,
+              phonenumber: data.phonenumber,
+              address: data.address,
+              gender: data.selectedGender,
+              reason: data.reason,
             });
           }
         }

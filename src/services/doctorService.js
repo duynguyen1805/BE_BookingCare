@@ -28,6 +28,19 @@ let getTopDoctorHome = (limitInput) => {
             as: "positionData",
             attributes: ["valueEN", "valueVI"],
           },
+          {
+            model: db.Doctor_Infor,
+            attributes: {
+              exclude: ["id"],
+            },
+            include: [
+              {
+                model: db.Specialty,
+                as: "specialtyData",
+                attributes: ["name"],
+              },
+            ],
+          },
         ],
         raw: true,
         nest: true,
@@ -50,6 +63,55 @@ let getAllDoctors = () => {
         attributes: {
           exclude: ["password", "image"],
         },
+        // include: [
+        //   {
+        //     model: db.Doctor_Infor,
+        //     attributes: {
+        //       exclude: ["id"],
+        //     },
+        //     include: [
+        //       {
+        //         model: db.Specialty,
+        //         as: "specialtyData",
+        //         attributes: ["name"],
+        //       },
+        //     ],
+        //   },
+        // ],
+      });
+      return resolve({
+        errCode: 0,
+        data: doctors,
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let getAllDoctorsforHomePage = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let doctors = await db.User.findAll({
+        where: { roleId: "R2" },
+        attributes: {
+          exclude: ["password", "image"],
+        },
+        include: [
+          {
+            model: db.Doctor_Infor,
+            attributes: {
+              exclude: ["id"],
+            },
+            include: [
+              {
+                model: db.Specialty,
+                as: "specialtyData",
+                attributes: ["name"],
+              },
+            ],
+          },
+        ],
       });
       return resolve({
         errCode: 0,
@@ -532,8 +594,27 @@ let confirmArrived = (data) => {
       });
 
       if (appointment) {
-        appointment.statusId = "S3";
-        await appointment.save();
+        await db.Booking.destroy({
+          where: {
+            doctorId: data.doctorId,
+            patientId: data.patientId,
+            timeType: data.timeType,
+            statusId: "S2",
+          },
+        });
+      }
+
+      if (appointment) {
+        await db.History.create({
+          doctorId: data.doctorId,
+          patientId: data.patientId,
+          fullname: data.fullname,
+          phonenumber: data.phonenumber,
+          address: data.address,
+          gender: data.gender,
+          reason: data.reason,
+          statusId: "S3",
+        });
       }
 
       await emailService.sentAttachment(data);
@@ -543,6 +624,79 @@ let confirmArrived = (data) => {
         errMessage: "Ok",
       });
     }
+  });
+};
+
+let getAllSchedule = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let users = "";
+      if (userId === "ALL") {
+        users = db.Schedule.findAll({
+          include: [
+            {
+              model: db.Allcode,
+              as: "timeTypeData",
+              attributes: ["valueEN", "valueVI"],
+            },
+          ],
+          order: [
+            ["date", "ASC"],
+            ["timeType", "ASC"],
+          ],
+          raw: false,
+          nest: true,
+        });
+      }
+      if (userId && userId !== "ALL") {
+        users = await db.Schedule.findAll({
+          where: { doctorId: userId },
+          order: [
+            ["date", "ASC"],
+            ["timeType", "ASC"],
+          ],
+          include: [
+            {
+              model: db.Allcode,
+              as: "timeTypeData",
+              attributes: ["valueEN", "valueVI"],
+            },
+          ],
+
+          raw: false,
+          nest: true,
+        });
+      }
+
+      if (!users) users = {};
+      resolve(users);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let handleDeleteSchedule = async (userId) => {
+  return new Promise(async (resolve, reject) => {
+    let schedule = await db.Schedule.findOne({
+      where: { id: userId },
+    });
+
+    if (!schedule) {
+      resolve({
+        errCode: 2,
+        errMessage: ` schedule isn't exist`,
+      });
+    }
+
+    await db.Schedule.destroy({
+      where: { id: userId },
+    });
+
+    resolve({
+      errCode: 0,
+      message: "schedule is delete",
+    });
   });
 };
 
@@ -557,4 +711,7 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   confirmArrived: confirmArrived,
+  getAllSchedule: getAllSchedule,
+  handleDeleteSchedule: handleDeleteSchedule,
+  getAllDoctorsforHomePage: getAllDoctorsforHomePage,
 };

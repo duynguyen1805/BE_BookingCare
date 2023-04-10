@@ -91,6 +91,7 @@ let getAllUsers = (userId) => {
           attributes: {
             exclude: ["password"],
           },
+          order: [["roleId", "DESC"]],
         });
       }
       if (userId && userId !== "ALL") {

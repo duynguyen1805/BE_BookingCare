@@ -24,7 +24,22 @@ module.exports = {
         type: Sequelize.STRING,
       },
       token: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+      },
+      fullname: {
+        type: Sequelize.STRING,
+      },
+      phonenumber: {
+        type: Sequelize.STRING,
+      },
+      address: {
+        type: Sequelize.STRING,
+      },
+      gender: {
+        type: Sequelize.STRING,
+      },
+      reason: {
+        type: Sequelize.STRING,
       },
 
       createdAt: {

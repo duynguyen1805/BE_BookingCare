@@ -9,13 +9,29 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // định danh các mối quan hệ
-      Doctor_Infor.belongsTo(models.User, { foreignKey: 'doctorId'})
+      Doctor_Infor.belongsTo(models.User, { foreignKey: "doctorId" });
 
-      Doctor_Infor.belongsTo(models.Allcode, { foreignKey: 'priceId', targetKey: 'keyMap', as: 'priceData' })
-      Doctor_Infor.belongsTo(models.Allcode, { foreignKey: 'provinceId', targetKey: 'keyMap', as: 'provinceData' })
-      Doctor_Infor.belongsTo(models.Allcode, { foreignKey: 'paymentId', targetKey: 'keyMap', as: 'paymentData' })
+      Doctor_Infor.belongsTo(models.Allcode, {
+        foreignKey: "priceId",
+        targetKey: "keyMap",
+        as: "priceData",
+      });
+      Doctor_Infor.belongsTo(models.Allcode, {
+        foreignKey: "provinceId",
+        targetKey: "keyMap",
+        as: "provinceData",
+      });
+      Doctor_Infor.belongsTo(models.Allcode, {
+        foreignKey: "paymentId",
+        targetKey: "keyMap",
+        as: "paymentData",
+      });
 
-
+      Doctor_Infor.belongsTo(models.Specialty, {
+        foreignKey: "specialtyId",
+        targetKey: "id",
+        as: "specialtyData",
+      });
     }
   }
   Doctor_Infor.init(
@@ -29,12 +45,12 @@ module.exports = (sequelize, DataTypes) => {
       addressClinic: DataTypes.STRING,
       nameClinic: DataTypes.STRING,
       note: DataTypes.STRING,
-      count: DataTypes.INTEGER
+      count: DataTypes.INTEGER,
     },
     {
       sequelize,
       modelName: "Doctor_Infor",
-      freezeTableName: true
+      freezeTableName: true,
     }
   );
   return Doctor_Infor;

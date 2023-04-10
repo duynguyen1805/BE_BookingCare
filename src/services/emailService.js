@@ -59,7 +59,7 @@ let getHTMLEmail = (dataSend) => {
 
 let getBodyHTMLEmailRemedy = (dataSend) => {
   let result = `
-    <h3>Xin chào ${dataSend.patientName}</h3>
+    <h3>Xin chào</h3>
     <p>Đây là Email thông báo hoàn thành việc khám bệnh của bạn.</p>
     <p>Thông tin đơn thuốc/hóa đơn được gửi trong file đính kèm.</p>
 
@@ -87,7 +87,7 @@ let sentAttachment = async (dataSend) => {
         to: dataSend.email, // list of receivers
         subject: "Kết quá khám bệnh ✔", // Subject line
         text: "Hello world?", // plain text body
-        html: getBodyHTMLEmailRemedy(dataSend),
+        html: getBodyHTMLEmailRemedy(dataSend.patientName),
         attachments: [
           {
             filename: `remedy-${
