@@ -305,7 +305,12 @@ let getDetailDoctorById = (id) => {
 let bulkCreateSchedule = (data) => {
   return new Promise(async (resovle, reject) => {
     try {
-      if (!data.arrSchedule || !data.doctorId || !data.formatedDate) {
+      if (
+        !data.arrSchedule ||
+        !data.doctorId ||
+        !data.formatedDate ||
+        !data.maxNumber
+      ) {
         resovle({
           errCode: 1,
           errMessage: "Missing required parameter",
@@ -314,7 +319,7 @@ let bulkCreateSchedule = (data) => {
         let schedule = data.arrSchedule;
         if (schedule && schedule.length > 0) {
           schedule = schedule.map((item, index) => {
-            item.maxNumber = MAX_NUMBER_SCHEDULE;
+            item.maxNumber = data.maxNumber;
             return item;
           });
         }
@@ -700,6 +705,30 @@ let handleDeleteSchedule = async (userId) => {
   });
 };
 
+let handleDeleteAllSchedule = async (dayschedule) => {
+  return new Promise(async (resolve, reject) => {
+    let schedule = await db.Schedule.findOne({
+      where: { date: dayschedule },
+    });
+
+    if (!schedule) {
+      resolve({
+        errCode: 2,
+        errMessage: ` schedule isn't exist`,
+      });
+    }
+
+    await db.Schedule.destroy({
+      where: { date: dayschedule },
+    });
+
+    resolve({
+      errCode: 0,
+      message: "schedule is delete",
+    });
+  });
+};
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
@@ -714,4 +743,5 @@ module.exports = {
   getAllSchedule: getAllSchedule,
   handleDeleteSchedule: handleDeleteSchedule,
   getAllDoctorsforHomePage: getAllDoctorsforHomePage,
+  handleDeleteAllSchedule: handleDeleteAllSchedule,
 };

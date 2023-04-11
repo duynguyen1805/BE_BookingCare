@@ -189,6 +189,18 @@ let handleDeleteSchedule = async (req, res) => {
   return res.status(200).json(message);
 };
 
+let handleDeleteAllSchedule = async (req, res) => {
+  if (!req.body) {
+    return res.status(200).json({
+      errCode: 1,
+      message: "missing require parameter",
+    });
+  }
+  let message = await doctorService.handleDeleteAllSchedule(req.body);
+  console.log(message);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   getTopDoctor: getTopDoctor,
   getAllDoctors: getAllDoctors,
@@ -203,4 +215,5 @@ module.exports = {
   getAllSchedule: getAllSchedule,
   handleDeleteSchedule: handleDeleteSchedule,
   getAllDoctorsforHomePage: getAllDoctorsforHomePage,
+  handleDeleteAllSchedule: handleDeleteAllSchedule,
 };

@@ -52,6 +52,10 @@ const initWebRoutes = (app) => {
   router.put("/api/edit-user", userController.handleEditUser);
   router.delete("/api/delete-user", userController.handleDeleteUser);
   router.delete("/api/delete-schedule", doctorController.handleDeleteSchedule);
+  router.delete(
+    "/api/delete-all-schedule",
+    doctorController.handleDeleteAllSchedule
+  );
 
   router.get("/api/allcode", userController.getAllCode);
 

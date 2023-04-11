@@ -93,6 +93,18 @@ let postBookAppointment = (data) => {
         //     },
         //   });
         // }
+        let incCurrentNumber = await db.Schedule.findOne({
+          where: {
+            doctorId: data.doctorId,
+            timeType: data.timeType,
+            date: data.date,
+          },
+          raw: false,
+        });
+        if (incCurrentNumber) {
+          incCurrentNumber.currentNumber++;
+          await incCurrentNumber.save();
+        }
 
         resovle({
           errCode: 0,
