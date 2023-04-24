@@ -705,10 +705,10 @@ let handleDeleteSchedule = async (userId) => {
   });
 };
 
-let handleDeleteAllSchedule = async (dayschedule) => {
+let handleDeleteAllSchedule = async (formatedDate) => {
   return new Promise(async (resolve, reject) => {
     let schedule = await db.Schedule.findOne({
-      where: { date: dayschedule },
+      where: { date: formatedDate },
     });
 
     if (!schedule) {
@@ -719,12 +719,49 @@ let handleDeleteAllSchedule = async (dayschedule) => {
     }
 
     await db.Schedule.destroy({
-      where: { date: dayschedule },
+      where: { date: formatedDate },
     });
 
     resolve({
       errCode: 0,
       message: "schedule is delete",
+    });
+  });
+};
+
+let handleDeletePatient = async (data) => {
+  return new Promise(async (resolve, reject) => {
+    let patient = await db.Booking.findOne({
+      where: { id: data.id },
+    });
+
+    if (!patient) {
+      resolve({
+        errCode: 2,
+        errMessage: ` patient isn't exist`,
+      });
+    }
+
+    await db.Booking.destroy({
+      where: { id: data.id },
+    });
+
+    let incCurrentNumber = await db.Schedule.findOne({
+      where: {
+        doctorId: data.doctorId,
+        timeType: data.timeType,
+        date: data.date,
+      },
+      raw: false,
+    });
+    if (incCurrentNumber) {
+      incCurrentNumber.currentNumber--;
+      await incCurrentNumber.save();
+    }
+
+    resolve({
+      errCode: 0,
+      message: "patient is delete",
     });
   });
 };
@@ -744,4 +781,5 @@ module.exports = {
   handleDeleteSchedule: handleDeleteSchedule,
   getAllDoctorsforHomePage: getAllDoctorsforHomePage,
   handleDeleteAllSchedule: handleDeleteAllSchedule,
+  handleDeletePatient: handleDeletePatient,
 };

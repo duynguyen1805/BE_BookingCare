@@ -190,13 +190,25 @@ let handleDeleteSchedule = async (req, res) => {
 };
 
 let handleDeleteAllSchedule = async (req, res) => {
+  if (!req.body.date) {
+    return res.status(200).json({
+      errCode: 1,
+      message: "missing require parameter",
+    });
+  }
+  let message = await doctorService.handleDeleteAllSchedule(req.body.date);
+  console.log(message);
+  return res.status(200).json(message);
+};
+
+let handleDeletePatient = async (req, res) => {
   if (!req.body) {
     return res.status(200).json({
       errCode: 1,
       message: "missing require parameter",
     });
   }
-  let message = await doctorService.handleDeleteAllSchedule(req.body);
+  let message = await doctorService.handleDeletePatient(req.body);
   console.log(message);
   return res.status(200).json(message);
 };
@@ -216,4 +228,5 @@ module.exports = {
   handleDeleteSchedule: handleDeleteSchedule,
   getAllDoctorsforHomePage: getAllDoctorsforHomePage,
   handleDeleteAllSchedule: handleDeleteAllSchedule,
+  handleDeletePatient: handleDeletePatient,
 };

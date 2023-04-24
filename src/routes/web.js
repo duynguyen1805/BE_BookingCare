@@ -56,6 +56,7 @@ const initWebRoutes = (app) => {
     "/api/delete-all-schedule",
     doctorController.handleDeleteAllSchedule
   );
+  router.delete("/api/delete-patient", doctorController.handleDeletePatient);
 
   router.get("/api/allcode", userController.getAllCode);
 
